@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: fm_research_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       fm_research
+      POSTGRES_USER:     fm_user
+      POSTGRES_PASSWORD: fm_password
+    ports:
+      - "5432:5432"          # connect from your local machine on localhost:5432
+    volumes:
+      - fm_pgdata:/var/lib/postgresql/data          # persists your data between restarts
+      - ./schema.sql:/docker-entrypoint-initdb.d/01_schema.sql   # auto-runs on first start
+
+volumes:
+  fm_pgdata:
